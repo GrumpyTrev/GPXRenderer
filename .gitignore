@@ -259,3 +259,8 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/boxcircular.cs
+/BoxCircular.gpx
+/BoxCircular.xml
+/Great Coum.gpx
+/GPXRenderer/Data/default.db3

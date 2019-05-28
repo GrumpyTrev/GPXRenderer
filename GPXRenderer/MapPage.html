@@ -1,0 +1,89 @@
+﻿<!-- This file is rendered when the WebBrowser is first displayed.
+	 It contains JavaScript functions to display GPX routes -->
+
+<!-- The following line allows active content to be run under IE - the MOTW (mark of the web)-->
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+	
+	<!-- Force the browser to use the latest version of IE available on the computer. --> 
+    <meta charset="utf-8" http-equiv="X-UA-Compatible" content="IE=edge" /> 
+
+    <title></title>
+
+	<!-- Reference to the Bing Maps SDK --> 
+    <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap' async defer></script> 
+
+	<script type='text/javascript'> 
+    var map; 
+
+	// This method is called when this page is first loaded.It creates a Bing WebControl map with the supplied credentials and with OS Maps
+	// as default
+    function GetMap() 
+    { 
+        map = new Microsoft.Maps.Map('#theMap', { 
+			credentials: 'Ah_C8OJJu8wnNX50rGHf8_OYKonuhZ-CfLQ-kXS-4tI-QsTN9pkLPPfgZgKigwa8',
+			mapTypeId: Microsoft.Maps.MapTypeId.ordnanceSurvey
+        }); 
+    } 
+
+	// Display a GPX file supplied as a string
+	function DisplayGPXString(layerName, gpxAsString, show )
+	{
+		 //Load the GeoXml module.
+		Microsoft.Maps.loadModule('Microsoft.Maps.GeoXml', function ()
+		{
+            //Parse the XML data.
+            var gpxData = Microsoft.Maps.GeoXml.read(gpxAsString);
+
+            //Do something with the parsed XML data, in this case render it.
+            RenderGeoXmlDataSet(layerName, gpxData, show );
+        });
+	}
+
+	// Display a polyline joining alll the locations in the GPX object
+	function RenderGeoXmlDataSet(layerName, gpxData, show)
+	{
+		//Add all shapes that are not in layers to the map.
+		if (gpxData.shapes != null)
+		{
+			for (var i = 0; i < gpxData.shapes.length; i++)
+			{
+				// Make a new Polyline from the data, update its colour and thickness.
+				var newLine = new Microsoft.Maps.Polyline( gpxData.shapes[i].getLocations(), { strokeColor: 'red', strokeThickness: 5 } );
+
+				// Add this line to a new layer and add the layer to the map
+				var newLayer = new Microsoft.Maps.Layer( layerName );
+				newLayer.add(newLine);
+				newLayer.setVisible((show == 1) ? true : false);
+				map.layers.insert( newLayer );
+			}
+        }
+    }
+
+	// Hide or show the specified map
+	function DisplayMap(layerName, show)
+	{
+		var found = false;
+		var index = 0;
+		while ((found == false) && (index < map.layers.length))
+		{
+			var mapLayer = map.layers[index];
+			if (mapLayer.getId() == layerName)
+			{
+				found = true;
+				mapLayer.setVisible( ( show == 1 ) ? true : false );
+			}
+
+			index++;
+		}
+	}
+	</script>
+</head>
+<body>
+	<div id="theMap"></div> 
+</body>
+</html>

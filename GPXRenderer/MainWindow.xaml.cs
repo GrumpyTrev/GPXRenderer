@@ -1,17 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace GPXRenderer
 {
@@ -23,6 +10,34 @@ namespace GPXRenderer
 		public MainWindow()
 		{
 			InitializeComponent();
+		}
+
+		/// <summary>
+		/// Called when the data grid showing the route details has been loaded (RouteView.xaml)
+		/// Create a RouteViewModel instance and load the route summary data. Set the context for the data grid
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void RouteViewControl_Loaded( object sender, RoutedEventArgs e )
+		{
+			ViewModel.RouteViewModel viewModel = new ViewModel.RouteViewModel();
+			viewModel.LoadRoutes();
+
+			RouteViewControl.DataContext = viewModel;
+		}
+
+		/// <summary>
+		/// Called when the WebBrowser control has been loaded.
+		/// Create a PointsViewModel instance, load the route points and pass them to the browser
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void MapViewControl_Loaded( object sender, RoutedEventArgs e )
+		{
+			ViewModel.PointsViewModel viewModel = new ViewModel.PointsViewModel();
+			viewModel.LoadPoints();
+
+			mapViewControl.MapContents = viewModel.Routes;
 		}
 	}
 }

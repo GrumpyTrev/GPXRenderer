@@ -1,12 +1,21 @@
-﻿<Window x:Class="GPXRenderer.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GPXRenderer"
-        mc:Ignorable="d"
+		xmlns:local="clr-namespace:GPXRenderer" x:Class="GPXRenderer.MainWindow"
+		xmlns:views="clr-namespace:GPXRenderer.Views"
+		mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="1*" />
+			<ColumnDefinition Width="5" />
+			<ColumnDefinition Width="4*" />
+		</Grid.ColumnDefinitions>
+
+		<views:MapView x:Name="mapViewControl" Grid.Column="2" Loaded="MapViewControl_Loaded"/>
+		<views:RouteView x:Name="RouteViewControl" Grid.Column="0" Loaded = "RouteViewControl_Loaded" />
+		<GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
+	</Grid>
 </Window>
